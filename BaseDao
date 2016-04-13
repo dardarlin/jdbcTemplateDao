@@ -258,8 +258,8 @@ public class BaseDao<T> {
 	 * @param args
 	 * @return
 	 */
-	public Pager<T> findBySqlForPager(String sql, Object[] args) {
-		return findBySqlForPager(sql,args,null);
+	public Page<T> findBySqlForPage(String sql, Object[] args) {
+		return findBySqlForPage(sql,args,null);
 	}
 	
 	/**
@@ -268,17 +268,17 @@ public class BaseDao<T> {
 	 * @param args
 	 * @return
 	 */
-	public Pager<T> findBySqlForPager(String sql, Object[] args,Pager<T> pager) {
+	public Page<T> findBySqlForPage(String sql, Object[] args,Page<T> Page) {
 		Long total = getCount(sql, args);
-		if(pager == null){
-			pager = new Pager<T>();
+		if(Page == null){
+			Page = new Page<T>();
 		}
-		sql = sql + getPagerLimit(pager);
+		sql = sql + getPageLimit(Page);
 		List<T> datas = (List<T>) queryForList(sql, args);
 
-		pager.setCount(total);
-		pager.setDatas(datas);
-		return pager;
+		Page.setCount(total);
+		Page.setData(datas);
+		return Page;
 	}
 	
 	
@@ -306,20 +306,20 @@ public class BaseDao<T> {
 	
 	/**
 	 * 为自定义的sql添加Limit
-	 * @param pager
+	 * @param Page
 	 * @return
 	 */
-	public String getPagerLimit(Pager pager) {
+	public String getPageLimit(Page Page) {
 		int pageOffset = 0;
-		int pageNum = pager.getCurrNum();
-		int pageSize = pager.getPreSize();
+		int pageNum = Page.getCurrNum();
+		int pageSize = Page.getPreSize();
 		if(pageNum > 0){
 			 pageOffset = (pageNum-1)*pageSize;
 		 }else{
 			 pageOffset = 0;
 		 }
-		pager.setOffset(pageOffset);
-		pager.setPreSize(pageSize);
+		Page.setOffset(pageOffset);
+		Page.setPreSize(pageSize);
 
 		StringBuilder sb = new StringBuilder(" limit ");
 		sb.append(pageOffset);
