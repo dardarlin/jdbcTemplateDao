@@ -334,7 +334,7 @@ public class BaseDao<T> {
 	 * @return
 	 */
 	public int tableExist(String tableName){
-		String sql = "select count(*) from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='pplive_jcms' and TABLE_NAME='"+tableName+"'";
+		String sql = "select count(*) from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='' and TABLE_NAME='"+tableName+"'";
 		return this.getJdbcTemplate().queryForInt(sql);
 	}
 	
